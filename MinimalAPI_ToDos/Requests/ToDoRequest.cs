@@ -4,11 +4,26 @@ public static class ToDoRequest
 {
     public static WebApplication RegisterEndpoints(this WebApplication app)
     {
-        app.MapGet("/todos", (ToDoRequest.GetAll));
-        app.MapGet("/todos/{id}", (ToDoRequest.GetById));
-        app.MapPost("/todos", (ToDoRequest.Create));
-        app.MapPut("/todos/{id}", (ToDoRequest.Update));
-        app.MapDelete("/todos/{id}", (ToDoRequest.Delete));
+        app.MapGet("/todos", ToDoRequest.GetAll)
+            .Produces<List<ToDo>>();
+
+        app.MapGet("/todos/{id}", ToDoRequest.GetById)
+            .Produces<ToDo>(200)
+            .Produces(404);
+
+        app.MapPost("/todos", ToDoRequest.Create)
+            .Produces<ToDo>(201)
+            .Accepts<ToDo>("application/json");
+
+        app.MapPut("/todos/{id}", ToDoRequest.Update)
+        .Produces<ToDo>(200)
+        .Produces(404)
+        .Accepts<ToDo>("application/json");
+
+        app.MapDelete("/todos/{id}", ToDoRequest.Delete)
+        .Produces<ToDo>(204)
+        .Produces(404);
+
         return app;
     }
     public static IResult GetAll(IToDoService service)
