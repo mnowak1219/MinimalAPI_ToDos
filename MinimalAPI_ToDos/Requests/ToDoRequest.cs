@@ -2,13 +2,14 @@
 
 public static class ToDoRequest
 {
-    public static void RegisterEndpoints(this WebApplication app)
+    public static WebApplication RegisterEndpoints(this WebApplication app)
     {
         app.MapGet("/todos", (ToDoRequest.GetAll));
         app.MapGet("/todos/{id}", (ToDoRequest.GetById));
         app.MapPost("/todos", (ToDoRequest.Create));
         app.MapPut("/todos/{id}", (ToDoRequest.Update));
         app.MapDelete("/todos/{id}", (ToDoRequest.Delete));
+        return app;
     }
     public static IResult GetAll(IToDoService service)
     {
