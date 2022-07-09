@@ -11,12 +11,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Services\AccountService.cs" />
     <None Include="Services\ToDoService.cs" />
     <None Include="Usings.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.6" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 

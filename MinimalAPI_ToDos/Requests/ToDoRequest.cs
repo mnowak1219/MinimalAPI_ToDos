@@ -1,13 +1,13 @@
 ﻿namespace MinimalAPI_ToDos.Requests;
 
-public static class ToDoRequest
+public class ToDoRequest
 {
     public static IResult GetAll(IToDoService service)
     {
         var toDos = service.GetAll();
         return Results.Ok(toDos);
     }
-
+    [AllowAnonymous]
     public static IResult GetById(IToDoService service, Guid id)
     {
         var toDo = service.GetById(id);
@@ -24,6 +24,7 @@ public static class ToDoRequest
         return Results.Created($"/todos/{toDo.Id}", toDo);
     }
 
+    [Authorize/*(optional policies)*/]
     public static IResult Update(IToDoService service, Guid id, ToDo toDo)
     {
         var toDoOriginal = service.GetById(id);

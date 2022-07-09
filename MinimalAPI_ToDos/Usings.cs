@@ -1,6 +1,11 @@
 ﻿global using FluentValidation;
+global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.IdentityModel.Tokens;
 global using MinimalAPI_ToDos.Entities;
 global using MinimalAPI_ToDos.Validators;
 global using MinimalAPI_ToDos.Requests;
 global using MinimalAPI_ToDos.Services;
+global using System.IdentityModel.Tokens.Jwt;
+global using System.Security.Claims;
+global using System.Text;

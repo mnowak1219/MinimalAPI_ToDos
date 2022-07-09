@@ -1,4 +1,7 @@
-﻿public static class Utilities
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+
+public static class Utilities
 {
     public static RouteHandlerBuilder WithValidator<T>(this RouteHandlerBuilder routeHandlerBuilder) where T : class
     {
@@ -35,11 +38,12 @@
         return routeHandlerBuilder;
     }
 
-    public static WebApplication RegisterEndpoints(this WebApplication app)
+    public static WebApplication RegisterToDoEndpoints(this WebApplication app)
     {
         app.MapGet("/todos", ToDoRequest.GetAll)
-            .Produces<List<ToDo>>()
-            .WithTags("To Dos");
+            .Produces<List<ToDo>>(StatusCodes.Status200OK)
+            .WithTags("To Dos")
+            .AllowAnonymous();
 
         app.MapGet("/todos/{id}", ToDoRequest.GetById)
             .Produces<ToDo>(StatusCodes.Status200OK)
@@ -63,7 +67,17 @@
             .Produces<ToDo>(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
             .WithTags("To Dos")
-            .ExcludeFromDescription();
+            .ExcludeFromDescription()
+            .RequireAuthorization(/*optional policy*/);
+
+        return app;
+    }
+
+    public static WebApplication RegisterAccountEndpoints(this WebApplication app)
+    {
+        app.MapGet("/account/token", AccountRequest.GetToken)
+            .Produces<string>(StatusCodes.Status200OK)
+            .WithTags("Account");
 
         return app;
     }
