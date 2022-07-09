@@ -15,5 +15,5 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseHttpsRedirection();
-ToDoRequest.RegisterEndpoints(app);
+app.RegisterEndpoints();
 app.Run();

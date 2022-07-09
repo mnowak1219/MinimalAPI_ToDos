@@ -1,8 +1,8 @@
 ﻿namespace MinimalAPI_ToDos.Requests;
 
-public class ToDoRequest
+public static class ToDoRequest
 {
-    public static void RegisterEndpoints(WebApplication app)
+    public static void RegisterEndpoints(this WebApplication app)
     {
         app.MapGet("/todos", (ToDoRequest.GetAll));
         app.MapGet("/todos/{id}", (ToDoRequest.GetById));
