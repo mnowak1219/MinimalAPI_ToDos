@@ -48,14 +48,25 @@ public static class ToDoRequest
         return Results.Ok(toDoThing);
     }
 
-    public static IResult Create(IToDoService service, ToDo toDo)
+    public static IResult Create(IToDoService service, ToDo toDo, IValidator<ToDo> validator)
     {
+        var validationResult = validator.Validate(toDo);
+        if (!validationResult.IsValid)
+        {
+            return Results.BadRequest(validationResult.Errors);
+        }
         service.Create(toDo);
         return Results.Created($"/todos/{toDo.Id}", toDo);
     }
 
-    public static IResult Update(IToDoService service, Guid id, ToDo toDo)
+    public static IResult Update(IToDoService service, Guid id, ToDo toDo, IValidator<ToDo> validator)
     {
+        var validationResult = validator.Validate(toDo);
+        if (!validationResult.IsValid)
+        {
+            return Results.BadRequest(validationResult.Errors);
+        }
+
         var toDoThing = service.GetById(id);
         if (toDoThing == null)
         {

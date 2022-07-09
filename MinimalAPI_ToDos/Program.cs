@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IToDoService, ToDoService>();
-
+builder.Services.AddValidatorsFromAssemblyContaining(typeof(ToDoValidator));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
