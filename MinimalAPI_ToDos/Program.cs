@@ -14,11 +14,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 app.UseHttpsRedirection();
-app.MapGet("/todos", (ToDoRequest.GetAll));
-app.MapGet("/todos/{id}", (ToDoRequest.GetById));
-app.MapPost("/todos", (ToDoRequest.Create));
-app.MapPut("/todos/{id}", (ToDoRequest.Update));
-app.MapDelete("/todos/{id}", (ToDoRequest.Delete));
+ToDoRequest.RegisterEndpoints(app);
 app.Run();
