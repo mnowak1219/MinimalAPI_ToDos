@@ -8,21 +8,21 @@ public static class ToDoRequest
             .Produces<List<ToDo>>();
 
         app.MapGet("/todos/{id}", ToDoRequest.GetById)
-            .Produces<ToDo>(200)
-            .Produces(404);
+            .Produces<ToDo>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status404NotFound);
 
         app.MapPost("/todos", ToDoRequest.Create)
-            .Produces<ToDo>(201)
+            .Produces<ToDo>(StatusCodes.Status201Created)
             .Accepts<ToDo>("application/json");
 
         app.MapPut("/todos/{id}", ToDoRequest.Update)
-        .Produces<ToDo>(200)
-        .Produces(404)
-        .Accepts<ToDo>("application/json");
+            .Produces<ToDo>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status404NotFound)
+            .Accepts<ToDo>("application/json");
 
         app.MapDelete("/todos/{id}", ToDoRequest.Delete)
-        .Produces<ToDo>(204)
-        .Produces(404);
+            .Produces<ToDo>(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status404NotFound);
 
         return app;
     }
