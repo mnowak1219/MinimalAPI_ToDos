@@ -18,13 +18,13 @@ public static class ToDoRequest
         return Results.Ok(toDo);
     }
 
-    public static IResult Create(IToDoService service, ToDo toDo, IValidator<ToDo> validator)
+    public static IResult Create(IToDoService service, ToDo toDo)
     {
         service.Create(toDo);
         return Results.Created($"/todos/{toDo.Id}", toDo);
     }
 
-    public static IResult Update(IToDoService service, Guid id, ToDo toDo, IValidator<ToDo> validator)
+    public static IResult Update(IToDoService service, Guid id, ToDo toDo)
     {
         var toDoOriginal = service.GetById(id);
         if (toDoOriginal == null)
