@@ -11,6 +11,9 @@ public static class Utilities
             endpointBuilder.RequestDelegate = async httpContext =>
             {
                 var validator = httpContext.RequestServices.GetRequiredService<IValidator<T>>();
+
+                httpContext.Request.EnableBuffering();
+
                 var body = await httpContext.Request.ReadFromJsonAsync<T>();
                 if (body == null)
                 {
@@ -27,6 +30,7 @@ public static class Utilities
                     return;
                 }
 
+                httpContext.Request.Body.Position = 0;
                 await originalDelegate(httpContext);
             };
         });
