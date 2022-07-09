@@ -2,36 +2,6 @@
 
 public static class ToDoRequest
 {
-    public static WebApplication RegisterEndpoints(this WebApplication app)
-    {
-        app.MapGet("/todos", ToDoRequest.GetAll)
-            .Produces<List<ToDo>>()
-            .WithTags("To Dos");
-
-        app.MapGet("/todos/{id}", ToDoRequest.GetById)
-            .Produces<ToDo>(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status404NotFound)
-            .WithTags("To Dos");
-
-        app.MapPost("/todos", ToDoRequest.Create)
-            .Produces<ToDo>(StatusCodes.Status201Created)
-            .Accepts<ToDo>("application/json")
-            .WithTags("To Dos");
-
-        app.MapPut("/todos/{id}", ToDoRequest.Update)
-            .Produces<ToDo>(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status404NotFound)
-            .Accepts<ToDo>("application/json")
-            .WithTags("To Dos");
-
-        app.MapDelete("/todos/{id}", ToDoRequest.Delete)
-            .Produces<ToDo>(StatusCodes.Status204NoContent)
-            .Produces(StatusCodes.Status404NotFound)
-            .WithTags("To Dos")
-            .ExcludeFromDescription();
-
-        return app;
-    }
     public static IResult GetAll(IToDoService service)
     {
         var toDos = service.GetAll();
@@ -40,35 +10,24 @@ public static class ToDoRequest
 
     public static IResult GetById(IToDoService service, Guid id)
     {
-        var toDoThing = service.GetById(id);
-        if (toDoThing == null)
+        var toDo = service.GetById(id);
+        if (toDo == null)
         {
             return Results.NotFound();
         }
-        return Results.Ok(toDoThing);
+        return Results.Ok(toDo);
     }
 
     public static IResult Create(IToDoService service, ToDo toDo, IValidator<ToDo> validator)
     {
-        var validationResult = validator.Validate(toDo);
-        if (!validationResult.IsValid)
-        {
-            return Results.BadRequest(validationResult.Errors);
-        }
         service.Create(toDo);
         return Results.Created($"/todos/{toDo.Id}", toDo);
     }
 
     public static IResult Update(IToDoService service, Guid id, ToDo toDo, IValidator<ToDo> validator)
     {
-        var validationResult = validator.Validate(toDo);
-        if (!validationResult.IsValid)
-        {
-            return Results.BadRequest(validationResult.Errors);
-        }
-
-        var toDoThing = service.GetById(id);
-        if (toDoThing == null)
+        var toDoOriginal = service.GetById(id);
+        if (toDoOriginal == null)
         {
             return Results.NotFound();
         }
@@ -78,8 +37,8 @@ public static class ToDoRequest
 
     public static IResult Delete(IToDoService service, Guid id)
     {
-        var toDoThing = service.GetById(id);
-        if (toDoThing == null)
+        var toDo = service.GetById(id);
+        if (toDo == null)
         {
             return Results.NotFound();
         }
