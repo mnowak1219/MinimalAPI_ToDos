@@ -1,62 +1,60 @@
-﻿namespace MinimalAPI_ToDos.Services
+﻿namespace MinimalAPI_ToDos.Services;
+public interface IToDoService
 {
-    public interface IToDoService
+    void Create(ToDo toDo);
+
+    void Delete(Guid id);
+
+    List<ToDo> GetAll();
+
+    ToDo GetById(Guid id);
+
+    void Update(ToDo toDo);
+}
+
+public class ToDoService : IToDoService
+{
+    public ToDoService()
     {
-        void Create(ToDo toDo);
-
-        void Delete(Guid id);
-
-        List<ToDo> GetAll();
-
-        ToDo GetById(Guid id);
-
-        void Update(ToDo toDo);
+        var sampleToDo = new ToDo { Value = "Learn MinimalAPI" };
+        _toDos[sampleToDo.Id] = sampleToDo;
     }
 
-    public class ToDoService : IToDoService
+    private readonly Dictionary<Guid, ToDo> _toDos = new();
+
+    public ToDo GetById(Guid id)
     {
-        public ToDoService()
+        return _toDos.GetValueOrDefault(id);
+    }
+
+    public List<ToDo> GetAll()
+    {
+        return _toDos.Values.ToList();
+    }
+
+    public void Create(ToDo toDo)
+    {
+        if (toDo is null)
         {
-            var sampleToDo = new ToDo { Value = "Learn MinimalAPI" };
-            _toDos[sampleToDo.Id] = sampleToDo;
+            return;
         }
 
-        private readonly Dictionary<Guid, ToDo> _toDos = new();
+        _toDos[toDo.Id] = toDo;
+    }
 
-        public ToDo GetById(Guid id)
+    public void Update(ToDo toDo)
+    {
+        var existingToDo = GetById(toDo.Id);
+        if (existingToDo is null)
         {
-            return _toDos.GetValueOrDefault(id);
+            return;
         }
 
-        public List<ToDo> GetAll()
-        {
-            return _toDos.Values.ToList();
-        }
+        _toDos[toDo.Id] = toDo;
+    }
 
-        public void Create(ToDo toDo)
-        {
-            if (toDo is null)
-            {
-                return;
-            }
-
-            _toDos[toDo.Id] = toDo;
-        }
-
-        public void Update(ToDo toDo)
-        {
-            var existingToDo = GetById(toDo.Id);
-            if (existingToDo is null)
-            {
-                return;
-            }
-
-            _toDos[toDo.Id] = toDo;
-        }
-
-        public void Delete(Guid id)
-        {
-            _toDos.Remove(id);
-        }
+    public void Delete(Guid id)
+    {
+        _toDos.Remove(id);
     }
 }
