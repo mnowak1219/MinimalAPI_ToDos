@@ -1,6 +1,4 @@
-﻿namespace MinimalAPI_ToDos;
-
-public static class Utilities
+﻿public static class Utilities
 {
     public static RouteHandlerBuilder WithValidator<T>(this RouteHandlerBuilder routeHandlerBuilder) where T : class
     {
